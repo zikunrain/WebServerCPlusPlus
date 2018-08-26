@@ -27,7 +27,7 @@ int main() {
   // Unless you do more heavy non-threaded processing in the resources,
   // 1 thread is usually faster than several threads
   HttpServer server;
-  server.config.port = 8080;
+  server.config.port = 8081;
 
   // Add resources using path-regex and method-string, and an anonymous function
   // POST-example for the path /string, responds the posted string
@@ -108,6 +108,17 @@ int main() {
   // GET-example for the path /match/[number], responds with the matched string in path (number)
   // For instance a request GET /match/123 will receive: 123
   server.resource["^/match/([0-9]+)$"]["GET"] = [](shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request) {
+    // *response << "HTTP/1.1 200 OK\r\n"
+    //             << "Content-Length: " << name.length() << "\r\n\r\n"
+    //             << name;
+    // SimpleWeb::CaseInsensitiveMultimap header;
+    // header.emplace("Content-Type", "text/plain");
+    // header.emplace("Access-Control-Allow-Origin", "*");
+    // header.emplace("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+    // header.emplace("Access-Control-Max-Age", "1728000");
+    // header.emplace("Access-Control-Allow-Headers", "authorization,content-type");
+    *response << "HTTP/1.1 200 OK" << "\r\n"
+                      << "Access-Control-Allow-Origin: *" << "\r\n";
     response->write(request->path_match[1]);
   };
 
@@ -214,7 +225,7 @@ int main() {
   this_thread::sleep_for(chrono::seconds(1));
 
   // Client examples
-  HttpClient client("localhost:8080");
+  HttpClient client("localhost:8081");
 
   string json_string = "{\"firstName\": \"John\",\"lastName\": \"Smith\",\"age\": 25}";
 
