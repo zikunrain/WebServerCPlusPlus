@@ -1,0 +1,3 @@
+to compile a specific .cpp file, use "g++ http_examples.cpp -lpthread -lboost_filesystem -lboost_system". 
+to fix cross origin, add "*response < "Access-Control-Allow-Origin: *" << "\r\n"
+
